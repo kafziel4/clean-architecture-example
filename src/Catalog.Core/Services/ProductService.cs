@@ -1,6 +1,7 @@
 ﻿using Catalog.Core.Entities;
 using Catalog.Core.Exceptions;
 using Catalog.Core.Interfaces;
+using Catalog.Core.Pagination;
 
 namespace Catalog.Core.Services
 {
@@ -13,9 +14,13 @@ namespace Catalog.Core.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<Product>> GetProducts()
+        public async Task<(IEnumerable<Product>, PaginationMetadata)> GetProducts(PaginationParameters parameters)
         {
-            return await _unitOfWork.Products.GetAllAsync();
+            var itemCount = await _unitOfWork.Products.CountAsync();
+            var paginationMetadata = new PaginationMetadata(itemCount, parameters.PageSize, parameters.PageNumber);
+            var products = await _unitOfWork.Products.GetPagedProducts(parameters);
+
+            return (products, paginationMetadata);
         }
 
         public async Task<Product?> GetProduct(int id)

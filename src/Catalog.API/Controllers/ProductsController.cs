@@ -2,7 +2,9 @@
 using Catalog.API.DTOs;
 using Catalog.Core.Entities;
 using Catalog.Core.Interfaces;
+using Catalog.Core.Pagination;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace Catalogue.API.Controllers
 {
@@ -22,9 +24,13 @@ namespace Catalogue.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductDto>>> GetAll()
+        public async Task<ActionResult<IEnumerable<ProductDto>>> GetAll(
+            [FromQuery] PaginationParameters parameters)
         {
-            var productEntities = await _productService.GetProducts();
+            var (productEntities, paginationMetadata) = await _productService.GetProducts(parameters);
+
+            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(paginationMetadata));
+
             return Ok(_mapper.Map<IEnumerable<ProductDto>>(productEntities));
         }
 

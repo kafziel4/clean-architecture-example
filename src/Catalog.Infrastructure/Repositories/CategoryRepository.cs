@@ -1,5 +1,6 @@
 ﻿using Catalog.Core.Entities;
 using Catalog.Core.Interfaces;
+using Catalog.Core.Pagination;
 using Catalog.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,7 +20,16 @@ namespace Catalog.Infrastructure.Repositories
             }
         }
 
-        public async Task<Category?> GetCategoriesWithProductsAsync(int id)
+        public async Task<IEnumerable<Category>> GetPagedCategories(PaginationParameters parameters)
+        {
+            return await Context.Categories
+                .OrderBy(c => c.Name)
+                .Skip(parameters.PageSize * (parameters.PageNumber - 1))
+                .Take(parameters.PageSize)
+                .ToListAsync();
+        }
+
+        public async Task<Category?> GetCategoryWithProductsAsync(int id)
         {
             return await Context.Categories
                 .Include(c => c.Products)

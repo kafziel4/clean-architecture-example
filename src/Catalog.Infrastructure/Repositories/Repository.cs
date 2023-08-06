@@ -12,14 +12,14 @@ namespace Catalog.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task<TEntity?> GetAsync(int id)
-        {
-            return await _context.Set<TEntity>().FindAsync(id);
-        }
-
         public async Task<IEnumerable<TEntity>> GetAllAsync()
         {
             return await _context.Set<TEntity>().ToListAsync();
+        }
+
+        public async Task<TEntity?> GetAsync(int id)
+        {
+            return await _context.Set<TEntity>().FindAsync(id);
         }
 
         public void Add(TEntity entity)
@@ -30,6 +30,11 @@ namespace Catalog.Infrastructure.Repositories
         public void Remove(TEntity entity)
         {
             _context.Set<TEntity>().Remove(entity);
+        }
+
+        public async Task<int> CountAsync()
+        {
+            return await _context.Set<TEntity>().CountAsync();
         }
     }
 }

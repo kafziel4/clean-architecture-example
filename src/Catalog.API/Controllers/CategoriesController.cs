@@ -2,7 +2,9 @@
 using Catalog.API.DTOs;
 using Catalog.Core.Entities;
 using Catalog.Core.Interfaces;
+using Catalog.Core.Pagination;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace Catalogue.API.Controllers
 {
@@ -20,9 +22,13 @@ namespace Catalogue.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CategoryWithoutProductsDto>>> GetAll()
+        public async Task<ActionResult<IEnumerable<CategoryWithoutProductsDto>>> GetAll(
+            [FromQuery] PaginationParameters parameters)
         {
-            var categoryEntities = await _categoryService.GetCategories();
+            var (categoryEntities, paginationMetadata) = await _categoryService.GetCategories(parameters);
+
+            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(paginationMetadata));
+
             return Ok(_mapper.Map<IEnumerable<CategoryWithoutProductsDto>>(categoryEntities));
         }
 
