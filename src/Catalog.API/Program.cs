@@ -1,6 +1,8 @@
 using Catalog.API;
 using Catalog.API.DTOs;
 using Catalog.API.Middleware;
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Serilog;
 using System.Text.Json.Serialization;
 
@@ -32,6 +34,9 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
+builder.Services.AddHealthChecks()
+    .AddSqlite(builder.Configuration["ConnectionStrings:DefaultConnection"]);
+
 builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
@@ -50,5 +55,10 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHealthChecks("/healthz", new HealthCheckOptions()
+{
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+});
 
 app.Run();
