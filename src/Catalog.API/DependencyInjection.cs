@@ -9,7 +9,7 @@ namespace Catalog.API
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddInfrastructure(
+        public static IServiceCollection AddAppServices(
             this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<AppDbContext>(options =>

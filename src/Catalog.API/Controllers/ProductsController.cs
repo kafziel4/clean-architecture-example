@@ -9,7 +9,7 @@ using System.Text.Json;
 
 namespace Catalogue.API.Controllers
 {
-    [Route("api/v1/[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     public class ProductsController : ControllerBase
     {
