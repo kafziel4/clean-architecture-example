@@ -1,9 +1,13 @@
 using Catalog.API;
 using Catalog.API.DTOs;
 using Catalog.API.Middleware;
+using Serilog;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog((context, configuration) =>
+    configuration.ReadFrom.Configuration(context.Configuration));
 
 // Add services to the container.
 

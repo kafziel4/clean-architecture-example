@@ -6,9 +6,12 @@ namespace Catalog.API.Middleware
     public class ExceptionMiddleware
     {
         private readonly RequestDelegate _next;
-        public ExceptionMiddleware(RequestDelegate next)
+        private readonly ILogger<ExceptionMiddleware> _logger;
+
+        public ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger)
         {
             _next = next;
+            _logger = logger;
         }
         public async Task InvokeAsync(HttpContext httpContext)
         {
@@ -18,10 +21,12 @@ namespace Catalog.API.Middleware
             }
             catch (ValidationException ex)
             {
+                _logger.LogWarning(ex, "Validation error.");
                 await HandleExceptionAsync(httpContext, ex);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.LogError(ex, "Unexpected error.");
                 await HandleExceptionAsync(httpContext);
             }
         }
