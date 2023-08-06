@@ -1,5 +1,6 @@
 ﻿using Catalog.Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace Catalog.Infrastructure.Repositories
 {
@@ -32,9 +33,9 @@ namespace Catalog.Infrastructure.Repositories
             _context.Set<TEntity>().Remove(entity);
         }
 
-        public async Task<int> CountAsync()
+        public async Task<bool> ExistsAsync(Expression<Func<TEntity, bool>> predicate)
         {
-            return await _context.Set<TEntity>().CountAsync();
+            return await _context.Set<TEntity>().AnyAsync(predicate);
         }
     }
 }

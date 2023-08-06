@@ -3,6 +3,7 @@ using Catalog.API.DTOs;
 using Catalog.Core.Entities;
 using Catalog.Core.Interfaces;
 using Catalog.Core.Pagination;
+using Catalog.Core.Search;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 
@@ -25,34 +26,36 @@ namespace Catalogue.API.Controllers
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductDto>>> GetAll(
-            [FromQuery] PaginationParameters parameters)
+            [FromQuery] PaginationParameters paginationParameters,
+            [FromQuery] SearchParameters searchParameters)
         {
-            var (productEntities, paginationMetadata) = await _productService.GetProducts(parameters);
+            var pagedProducts = await _productService
+                .GetProducts(paginationParameters, searchParameters);
 
-            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(paginationMetadata));
+            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(pagedProducts.PaginationMetadata));
 
-            return Ok(_mapper.Map<IEnumerable<ProductDto>>(productEntities));
+            return Ok(_mapper.Map<IEnumerable<ProductDto>>(pagedProducts.Collection));
         }
 
         [HttpGet("{id}", Name = "GetProduct")]
         public async Task<ActionResult<ProductDto>> Get(int id)
         {
-            var productEntity = await _productService.GetProduct(id);
-            if (productEntity is null)
+            var product = await _productService.GetProduct(id);
+            if (product is null)
                 return NotFound();
 
-            return Ok(_mapper.Map<ProductDto>(productEntity));
+            return Ok(_mapper.Map<ProductDto>(product));
         }
 
         [HttpPost]
         public async Task<ActionResult<ProductDto>> Post(ProductForCreationDto productDto)
         {
             var productToSave = _mapper.Map<Product>(productDto);
-            var productEntity = await _productService.AddProduct(productToSave);
+            var productToReturn = await _productService.AddProduct(productToSave);
 
             return new CreatedAtRouteResult("GetProduct",
-                new { id = productEntity.Id },
-                _mapper.Map<ProductDto>(productEntity));
+                new { id = productToReturn.Id },
+                _mapper.Map<ProductDto>(productToReturn));
         }
 
         [HttpPut("{id}")]
@@ -65,11 +68,11 @@ namespace Catalogue.API.Controllers
             }
 
             var productToUpdate = _mapper.Map<Product>(productDto);
-            var productEntity = await _productService.UpdateProduct(id, productToUpdate);
-            if (productEntity is null)
+            var productToReturn = await _productService.UpdateProduct(id, productToUpdate);
+            if (productToReturn is null)
                 return NotFound();
 
-            return Ok(_mapper.Map<ProductDto>(productEntity));
+            return Ok(_mapper.Map<ProductDto>(productToReturn));
         }
 
         [HttpDelete("{id}")]

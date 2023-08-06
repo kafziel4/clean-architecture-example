@@ -1,6 +1,7 @@
 ﻿using Catalog.Core.Entities;
 using Catalog.Core.Interfaces;
 using Catalog.Core.Pagination;
+using Catalog.Core.Search;
 
 namespace Catalog.Core.Services
 {
@@ -13,13 +14,10 @@ namespace Catalog.Core.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<(IEnumerable<Category>, PaginationMetadata)> GetCategories(PaginationParameters parameters)
+        public async Task<PagedCollection<Category>> GetCategories(
+            PaginationParameters paginationParameters, SearchParameters searchParameters)
         {
-            var itemCount = await _unitOfWork.Categories.CountAsync();
-            var paginationMetadata = new PaginationMetadata(itemCount, parameters.PageSize, parameters.PageNumber);
-            var categories = await _unitOfWork.Categories.GetPagedCategories(parameters);
-
-            return (categories, paginationMetadata);
+            return await _unitOfWork.Categories.GetPagedCategories(paginationParameters, searchParameters);
         }
 
         public async Task<Category?> GetCategory(int id)

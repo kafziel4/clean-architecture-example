@@ -2,6 +2,7 @@
 using Catalog.Core.Exceptions;
 using Catalog.Core.Interfaces;
 using Catalog.Core.Pagination;
+using Catalog.Core.Search;
 
 namespace Catalog.Core.Services
 {
@@ -14,13 +15,10 @@ namespace Catalog.Core.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<(IEnumerable<Product>, PaginationMetadata)> GetProducts(PaginationParameters parameters)
+        public async Task<PagedCollection<Product>> GetProducts(
+            PaginationParameters paginationParameters, SearchParameters searchParameters)
         {
-            var itemCount = await _unitOfWork.Products.CountAsync();
-            var paginationMetadata = new PaginationMetadata(itemCount, parameters.PageSize, parameters.PageNumber);
-            var products = await _unitOfWork.Products.GetPagedProducts(parameters);
-
-            return (products, paginationMetadata);
+            return await _unitOfWork.Products.GetPagedProducts(paginationParameters, searchParameters);
         }
 
         public async Task<Product?> GetProduct(int id)
@@ -71,8 +69,10 @@ namespace Catalog.Core.Services
 
         private async Task ValidateCategory(Product product)
         {
-            ValidationException.When(
-                !await _unitOfWork.Categories.CategoryExistsAsync(product.CategoryId),
+            var categoryExists = await _unitOfWork.Categories
+                .ExistsAsync(c => c.Id == product.CategoryId);
+
+            ValidationException.When(!categoryExists,
                 "Category does not exist.");
         }
     }

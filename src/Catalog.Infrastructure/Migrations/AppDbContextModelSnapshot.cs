@@ -31,7 +31,8 @@ namespace Catalog.Infrastructure.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.HasKey("Id");
 
@@ -70,7 +71,8 @@ namespace Catalog.Infrastructure.Migrations
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(200)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<string>("ImageUrl")
                         .IsRequired()
@@ -80,7 +82,8 @@ namespace Catalog.Infrastructure.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<decimal>("Price")
                         .HasPrecision(10, 2)
@@ -107,7 +110,7 @@ namespace Catalog.Infrastructure.Migrations
                             ImageUrl = "caneta.jpg",
                             Name = "Caneta",
                             Price = 2.00m,
-                            RegistrationDate = new DateTime(2023, 8, 4, 23, 8, 0, 852, DateTimeKind.Local).AddTicks(842),
+                            RegistrationDate = new DateTime(2023, 8, 6, 2, 40, 21, 360, DateTimeKind.Local).AddTicks(5243),
                             Stock = 50
                         },
                         new
@@ -118,7 +121,7 @@ namespace Catalog.Infrastructure.Migrations
                             ImageUrl = "lapis.jpg",
                             Name = "Lápis",
                             Price = 1.00m,
-                            RegistrationDate = new DateTime(2023, 8, 4, 23, 8, 0, 852, DateTimeKind.Local).AddTicks(900),
+                            RegistrationDate = new DateTime(2023, 8, 6, 2, 40, 21, 360, DateTimeKind.Local).AddTicks(5297),
                             Stock = 70
                         },
                         new
@@ -129,7 +132,7 @@ namespace Catalog.Infrastructure.Migrations
                             ImageUrl = "borracha.jpg",
                             Name = "Borracha",
                             Price = 1.50m,
-                            RegistrationDate = new DateTime(2023, 8, 4, 23, 8, 0, 852, DateTimeKind.Local).AddTicks(908),
+                            RegistrationDate = new DateTime(2023, 8, 6, 2, 40, 21, 360, DateTimeKind.Local).AddTicks(5305),
                             Stock = 30
                         },
                         new
@@ -140,7 +143,7 @@ namespace Catalog.Infrastructure.Migrations
                             ImageUrl = "notebook.jpg",
                             Name = "Notebook",
                             Price = 3000.00m,
-                            RegistrationDate = new DateTime(2023, 8, 4, 23, 8, 0, 852, DateTimeKind.Local).AddTicks(914),
+                            RegistrationDate = new DateTime(2023, 8, 6, 2, 40, 21, 360, DateTimeKind.Local).AddTicks(5312),
                             Stock = 5
                         },
                         new
@@ -151,7 +154,7 @@ namespace Catalog.Infrastructure.Migrations
                             ImageUrl = "tablet.jpg",
                             Name = "Tablet",
                             Price = 2500.00m,
-                            RegistrationDate = new DateTime(2023, 8, 4, 23, 8, 0, 852, DateTimeKind.Local).AddTicks(919),
+                            RegistrationDate = new DateTime(2023, 8, 6, 2, 40, 21, 360, DateTimeKind.Local).AddTicks(5317),
                             Stock = 10
                         },
                         new
@@ -162,7 +165,7 @@ namespace Catalog.Infrastructure.Migrations
                             ImageUrl = "celular.jpg",
                             Name = "Celular",
                             Price = 1500.00m,
-                            RegistrationDate = new DateTime(2023, 8, 4, 23, 8, 0, 852, DateTimeKind.Local).AddTicks(925),
+                            RegistrationDate = new DateTime(2023, 8, 6, 2, 40, 21, 360, DateTimeKind.Local).AddTicks(5323),
                             Stock = 15
                         },
                         new
@@ -173,7 +176,7 @@ namespace Catalog.Infrastructure.Migrations
                             ImageUrl = "bolsa.jpg",
                             Name = "Bolsa",
                             Price = 500.00m,
-                            RegistrationDate = new DateTime(2023, 8, 4, 23, 8, 0, 852, DateTimeKind.Local).AddTicks(930),
+                            RegistrationDate = new DateTime(2023, 8, 6, 2, 40, 21, 360, DateTimeKind.Local).AddTicks(5329),
                             Stock = 20
                         },
                         new
@@ -184,7 +187,7 @@ namespace Catalog.Infrastructure.Migrations
                             ImageUrl = "carteira.jpg",
                             Name = "Carteira",
                             Price = 700.00m,
-                            RegistrationDate = new DateTime(2023, 8, 4, 23, 8, 0, 852, DateTimeKind.Local).AddTicks(937),
+                            RegistrationDate = new DateTime(2023, 8, 6, 2, 40, 21, 360, DateTimeKind.Local).AddTicks(5335),
                             Stock = 40
                         },
                         new
@@ -195,7 +198,7 @@ namespace Catalog.Infrastructure.Migrations
                             ImageUrl = "cinto.jpg",
                             Name = "Cinto",
                             Price = 400.00m,
-                            RegistrationDate = new DateTime(2023, 8, 4, 23, 8, 0, 852, DateTimeKind.Local).AddTicks(942),
+                            RegistrationDate = new DateTime(2023, 8, 6, 2, 40, 21, 360, DateTimeKind.Local).AddTicks(5339),
                             Stock = 60
                         });
                 });

@@ -19,7 +19,7 @@ namespace Catalog.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false, collation: "NOCASE"),
                     ImageUrl = table.Column<string>(type: "TEXT", maxLength: 250, nullable: false)
                 },
                 constraints: table =>
@@ -33,8 +33,8 @@ namespace Catalog.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
-                    Description = table.Column<string>(type: "TEXT", maxLength: 200, nullable: false),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false, collation: "NOCASE"),
+                    Description = table.Column<string>(type: "TEXT", maxLength: 200, nullable: false, collation: "NOCASE"),
                     Price = table.Column<decimal>(type: "TEXT", precision: 10, scale: 2, nullable: false),
                     ImageUrl = table.Column<string>(type: "TEXT", maxLength: 250, nullable: false),
                     Stock = table.Column<int>(type: "INTEGER", nullable: false),
@@ -67,15 +67,15 @@ namespace Catalog.Infrastructure.Migrations
                 columns: new[] { "Id", "CategoryId", "Description", "ImageUrl", "Name", "Price", "RegistrationDate", "Stock" },
                 values: new object[,]
                 {
-                    { 1, 1, "Caneta esferográfica", "caneta.jpg", "Caneta", 2.00m, new DateTime(2023, 8, 4, 23, 8, 0, 852, DateTimeKind.Local).AddTicks(842), 50 },
-                    { 2, 1, "Lápis HB", "lapis.jpg", "Lápis", 1.00m, new DateTime(2023, 8, 4, 23, 8, 0, 852, DateTimeKind.Local).AddTicks(900), 70 },
-                    { 3, 1, "Borracha branca", "borracha.jpg", "Borracha", 1.50m, new DateTime(2023, 8, 4, 23, 8, 0, 852, DateTimeKind.Local).AddTicks(908), 30 },
-                    { 4, 2, "Notebook 15 polegadas", "notebook.jpg", "Notebook", 3000.00m, new DateTime(2023, 8, 4, 23, 8, 0, 852, DateTimeKind.Local).AddTicks(914), 5 },
-                    { 5, 2, "Tablet 10 polegadas", "tablet.jpg", "Tablet", 2500.00m, new DateTime(2023, 8, 4, 23, 8, 0, 852, DateTimeKind.Local).AddTicks(919), 10 },
-                    { 6, 2, "Celular 5 polegadas", "celular.jpg", "Celular", 1500.00m, new DateTime(2023, 8, 4, 23, 8, 0, 852, DateTimeKind.Local).AddTicks(925), 15 },
-                    { 7, 3, "Bolsa de couro", "bolsa.jpg", "Bolsa", 500.00m, new DateTime(2023, 8, 4, 23, 8, 0, 852, DateTimeKind.Local).AddTicks(930), 20 },
-                    { 8, 3, "Carteira de couro", "carteira.jpg", "Carteira", 700.00m, new DateTime(2023, 8, 4, 23, 8, 0, 852, DateTimeKind.Local).AddTicks(937), 40 },
-                    { 9, 3, "Cinto de couro", "cinto.jpg", "Cinto", 400.00m, new DateTime(2023, 8, 4, 23, 8, 0, 852, DateTimeKind.Local).AddTicks(942), 60 }
+                    { 1, 1, "Caneta esferográfica", "caneta.jpg", "Caneta", 2.00m, new DateTime(2023, 8, 6, 2, 40, 21, 360, DateTimeKind.Local).AddTicks(5243), 50 },
+                    { 2, 1, "Lápis HB", "lapis.jpg", "Lápis", 1.00m, new DateTime(2023, 8, 6, 2, 40, 21, 360, DateTimeKind.Local).AddTicks(5297), 70 },
+                    { 3, 1, "Borracha branca", "borracha.jpg", "Borracha", 1.50m, new DateTime(2023, 8, 6, 2, 40, 21, 360, DateTimeKind.Local).AddTicks(5305), 30 },
+                    { 4, 2, "Notebook 15 polegadas", "notebook.jpg", "Notebook", 3000.00m, new DateTime(2023, 8, 6, 2, 40, 21, 360, DateTimeKind.Local).AddTicks(5312), 5 },
+                    { 5, 2, "Tablet 10 polegadas", "tablet.jpg", "Tablet", 2500.00m, new DateTime(2023, 8, 6, 2, 40, 21, 360, DateTimeKind.Local).AddTicks(5317), 10 },
+                    { 6, 2, "Celular 5 polegadas", "celular.jpg", "Celular", 1500.00m, new DateTime(2023, 8, 6, 2, 40, 21, 360, DateTimeKind.Local).AddTicks(5323), 15 },
+                    { 7, 3, "Bolsa de couro", "bolsa.jpg", "Bolsa", 500.00m, new DateTime(2023, 8, 6, 2, 40, 21, 360, DateTimeKind.Local).AddTicks(5329), 20 },
+                    { 8, 3, "Carteira de couro", "carteira.jpg", "Carteira", 700.00m, new DateTime(2023, 8, 6, 2, 40, 21, 360, DateTimeKind.Local).AddTicks(5335), 40 },
+                    { 9, 3, "Cinto de couro", "cinto.jpg", "Cinto", 400.00m, new DateTime(2023, 8, 6, 2, 40, 21, 360, DateTimeKind.Local).AddTicks(5339), 60 }
                 });
 
             migrationBuilder.CreateIndex(

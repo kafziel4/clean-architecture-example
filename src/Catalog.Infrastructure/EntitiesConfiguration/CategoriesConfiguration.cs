@@ -9,8 +9,13 @@ namespace Catalog.Infrastructure.EntitiesConfiguration
         public void Configure(EntityTypeBuilder<Category> builder)
         {
             builder.HasKey(c => c.Id);
-            builder.Property(c => c.Name).HasMaxLength(Category.NameMaxLength).IsRequired();
-            builder.Property(c => c.ImageUrl).HasMaxLength(Category.ImageUrlMaxLength).IsRequired();
+            builder.Property(c => c.Name)
+                .HasMaxLength(Category.NameMaxLength)
+                .IsRequired()
+                .UseCollation("NOCASE");
+            builder.Property(c => c.ImageUrl)
+                .HasMaxLength(Category.ImageUrlMaxLength)
+                .IsRequired();
 
             builder.HasData(
                 new Category(1, "Material Escolar", "material.jpg"),

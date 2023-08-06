@@ -9,10 +9,20 @@ namespace Catalog.Infrastructure.EntitiesConfiguration
         public void Configure(EntityTypeBuilder<Product> builder)
         {
             builder.HasKey(p => p.Id);
-            builder.Property(p => p.Name).HasMaxLength(Product.NameMaxLength).IsRequired();
-            builder.Property(p => p.Description).HasMaxLength(Product.DescriptionMaxLength).IsRequired();
-            builder.Property(p => p.Price).HasPrecision(10, 2).IsRequired();
-            builder.Property(p => p.ImageUrl).HasMaxLength(Product.ImageUrlMaxLength).IsRequired();
+            builder.Property(p => p.Name)
+                .HasMaxLength(Product.NameMaxLength)
+                .IsRequired()
+                .UseCollation("NOCASE");
+            builder.Property(p => p.Description)
+                .HasMaxLength(Product.DescriptionMaxLength)
+                .IsRequired()
+                .UseCollation("NOCASE");
+            builder.Property(p => p.Price)
+                .HasPrecision(10, 2)
+                .IsRequired();
+            builder.Property(p => p.ImageUrl)
+                .HasMaxLength(Product.ImageUrlMaxLength)
+                .IsRequired();
             builder.Property(p => p.Stock).IsRequired();
             builder.Property(p => p.RegistrationDate).IsRequired();
 

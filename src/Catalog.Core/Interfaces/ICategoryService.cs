@@ -1,11 +1,13 @@
 ﻿using Catalog.Core.Entities;
 using Catalog.Core.Pagination;
+using Catalog.Core.Search;
 
 namespace Catalog.Core.Interfaces
 {
     public interface ICategoryService
     {
-        Task<(IEnumerable<Category>, PaginationMetadata)> GetCategories(PaginationParameters parameters);
+        Task<PagedCollection<Category>> GetCategories(
+            PaginationParameters paginationParameters, SearchParameters searchParameters);
         Task<Category?> GetCategory(int id);
         Task<Category?> GetCategoryWithProducts(int id);
         Task<Category> AddCategory(Category category);

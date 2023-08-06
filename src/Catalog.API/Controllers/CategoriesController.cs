@@ -3,6 +3,7 @@ using Catalog.API.DTOs;
 using Catalog.Core.Entities;
 using Catalog.Core.Interfaces;
 using Catalog.Core.Pagination;
+using Catalog.Core.Search;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 
@@ -23,42 +24,44 @@ namespace Catalogue.API.Controllers
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CategoryWithoutProductsDto>>> GetAll(
-            [FromQuery] PaginationParameters parameters)
+            [FromQuery] PaginationParameters paginationParameters,
+            [FromQuery] SearchParameters searchParameters)
         {
-            var (categoryEntities, paginationMetadata) = await _categoryService.GetCategories(parameters);
+            var pagedCategories = await _categoryService
+                .GetCategories(paginationParameters, searchParameters);
 
-            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(paginationMetadata));
+            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(pagedCategories.PaginationMetadata));
 
-            return Ok(_mapper.Map<IEnumerable<CategoryWithoutProductsDto>>(categoryEntities));
+            return Ok(_mapper.Map<IEnumerable<CategoryWithoutProductsDto>>(pagedCategories.Collection));
         }
 
         [HttpGet("{id}", Name = "GetCategory")]
         public async Task<ActionResult<ICategoryDto>> Get(int id, bool includeProducts = false)
         {
-            Category? categoryEntity;
+            Category? category;
             if (includeProducts)
-                categoryEntity = await _categoryService.GetCategoryWithProducts(id);
+                category = await _categoryService.GetCategoryWithProducts(id);
             else
-                categoryEntity = await _categoryService.GetCategory(id);
+                category = await _categoryService.GetCategory(id);
 
-            if (categoryEntity is null)
+            if (category is null)
                 return NotFound();
 
             if (includeProducts)
-                return Ok(_mapper.Map<CategoryWithProductsDto>(categoryEntity));
+                return Ok(_mapper.Map<CategoryWithProductsDto>(category));
 
-            return Ok(_mapper.Map<CategoryWithoutProductsDto>(categoryEntity));
+            return Ok(_mapper.Map<CategoryWithoutProductsDto>(category));
         }
 
         [HttpPost]
         public async Task<ActionResult<CategoryWithoutProductsDto>> Post(CategoryForCreationDto categoryDto)
         {
             var categoryToSave = _mapper.Map<Category>(categoryDto);
-            var categoryEntity = await _categoryService.AddCategory(categoryToSave);
+            var categoryToReturn = await _categoryService.AddCategory(categoryToSave);
 
             return new CreatedAtRouteResult("GetCategory",
-                new { id = categoryEntity.Id },
-                _mapper.Map<CategoryWithoutProductsDto>(categoryEntity));
+                new { id = categoryToReturn.Id },
+                _mapper.Map<CategoryWithoutProductsDto>(categoryToReturn));
         }
 
         [HttpPut("{id}")]
@@ -71,11 +74,11 @@ namespace Catalogue.API.Controllers
             }
 
             var categoryToUpdate = _mapper.Map<Category>(categoryDto);
-            var categoryEntity = await _categoryService.UpdateCategory(id, categoryToUpdate);
-            if (categoryEntity is null)
+            var categoryToReturn = await _categoryService.UpdateCategory(id, categoryToUpdate);
+            if (categoryToReturn is null)
                 return NotFound();
 
-            return Ok(_mapper.Map<CategoryWithoutProductsDto>(categoryEntity));
+            return Ok(_mapper.Map<CategoryWithoutProductsDto>(categoryToReturn));
         }
 
         [HttpDelete("{id}")]
