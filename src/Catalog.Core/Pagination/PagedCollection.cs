@@ -2,13 +2,13 @@
 {
     public class PagedCollection<T>
     {
-        public IEnumerable<T> Collection { get; set; }
-        public PaginationMetadata PaginationMetadata { get; set; }
+        public IEnumerable<T> Collection { get; private set; }
+        public PaginationMetadata PaginationMetadata { get; private set; }
 
-        public PagedCollection(IEnumerable<T> collection, PaginationMetadata paginationMetadata)
+        public PagedCollection(IEnumerable<T> collection, int itemCount, int pageSize, int currentPage)
         {
             Collection = collection;
-            PaginationMetadata = paginationMetadata;
+            PaginationMetadata = new PaginationMetadata(itemCount, pageSize, currentPage);
         }
     }
 }

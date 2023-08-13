@@ -31,14 +31,14 @@ namespace Catalog.API.Middleware
             }
         }
 
-        private async Task HandleExceptionAsync(HttpContext context, Exception exception)
+        private static async Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
             context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
             await context.Response.WriteAsJsonAsync(
-                new { Message = exception.Message });
+                new { exception.Message });
         }
 
-        private async Task HandleExceptionAsync(HttpContext context)
+        private static async Task HandleExceptionAsync(HttpContext context)
         {
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
             await context.Response.WriteAsJsonAsync(

@@ -13,7 +13,7 @@ namespace Catalog.Infrastructure.Repositories
         {
         }
 
-        public AppDbContext Context
+        private AppDbContext Context
         {
             get
             {
@@ -44,8 +44,7 @@ namespace Catalog.Infrastructure.Repositories
                 .ToListAsync();
 
             return new PagedCollection<Product>(
-                products,
-                new PaginationMetadata(itemCount, paginationParameters.PageSize, paginationParameters.PageNumber));
+                products, itemCount, paginationParameters.PageSize, paginationParameters.PageNumber);
         }
     }
 }

@@ -13,7 +13,7 @@ namespace Catalog.Infrastructure.Repositories
         {
         }
 
-        public AppDbContext Context
+        private AppDbContext Context
         {
             get
             {
@@ -43,8 +43,7 @@ namespace Catalog.Infrastructure.Repositories
                 .ToListAsync();
 
             return new PagedCollection<Category>(
-                categories,
-                new PaginationMetadata(itemCount, paginationParameters.PageSize, paginationParameters.PageNumber));
+                categories, itemCount, paginationParameters.PageSize, paginationParameters.PageNumber);
         }
 
         public async Task<Category?> GetCategoryWithProductsAsync(int id)

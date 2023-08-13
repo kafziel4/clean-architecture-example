@@ -1,5 +1,4 @@
-﻿using Catalog.API.Mappings;
-using Catalog.Core.Interfaces;
+﻿using Catalog.Core.Interfaces;
 using Catalog.Core.Services;
 using Catalog.Infrastructure.Context;
 using Catalog.Infrastructure.Repositories;
@@ -20,8 +19,6 @@ namespace Catalog.API
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IProductService, ProductService>();
-
-            services.AddAutoMapper(typeof(DomainToDtoMappingProfile));
 
             return services;
         }

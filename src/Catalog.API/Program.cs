@@ -1,4 +1,5 @@
 using Catalog.API;
+using Catalog.API.Mappings;
 using Catalog.API.Middleware;
 using Catalog.API.Swagger;
 using HealthChecks.UI.Client;
@@ -6,7 +7,6 @@ using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Serilog;
-using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,8 +15,7 @@ builder.Host.UseSerilog((context, configuration) =>
 
 // Add services to the container.
 
-builder.Services.AddControllers().AddJsonOptions(options =>
-    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -37,6 +36,8 @@ builder.Services.AddVersionedApiExplorer(options =>
 
 builder.Services.AddHealthChecks()
     .AddSqlite(builder.Configuration["ConnectionStrings:DefaultConnection"]);
+
+builder.Services.AddAutoMapper(typeof(DomainToDtoMappingProfile));
 
 builder.Services.AddAppServices(builder.Configuration);
 
